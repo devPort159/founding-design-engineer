@@ -1851,7 +1851,7 @@ function ChargersMapPage() {
                                     
                                     {/* Start Charging Button - Only shown when expanded */}
                                     <div className="p-4 border-t border-gray-100 flex-shrink-0 bg-white">
-                                        <Button size="lg" className="w-full" onClick={handleStartSession} disabled={isStartingSession || (activeTab === 'chargers' && !selectedEvse)}>
+                                        <Button size="lg" className="w-full" onClick={handleStartSession}>
                                             <span>{isStartingSession ? "Starting Session..." : "Start Charging Session"}</span>
                                         </Button>
                                     </div>
