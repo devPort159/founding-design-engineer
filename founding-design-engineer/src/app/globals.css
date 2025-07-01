@@ -1,0 +1,269 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(0.99 0.0057 84.57); /* changed */
+  --foreground: oklch(0.24 0.0286 266.34); /* changed */
+  --card: oklch(0.98 0.0114 84.58); /* unchanged but correct */
+  --card-foreground: oklch(0.24 0.0286 266.34); /* changed */
+  --popover: oklch(1 0 0); /* unchanged but correct */
+  --popover-foreground: oklch(0.24 0.0286 266.34 / 80%); /* changed */
+  --primary: oklch(0.24 0.0286 266.34); /* changed */
+  --primary-foreground: oklch(1 0 0); /* changed */
+  --secondary: oklch(0.95 0.1425 120.97); /* changed */
+  --secondary-foreground: oklch(0.24 0.0286 266.34); /* changed */
+  --muted: oklch(0.96 0.08 119.28); /* changed */
+  --muted-foreground: oklch(0.556 0 0); /* unchanged but correct */
+  --accent: oklch(0.95 0.1425 120.97); /* changed */
+  --accent-foreground: oklch(0.18 0.0188 274.65); /* changed */
+  --destructive: oklch(0.69 0.2023 40.41); /* unchanged but correct */
+  --border: oklch(0.93 0.0103 81.79); /* changed */
+  --input: oklch(0.93 0.0103 81.79); /* changed */
+  --ring: oklch(0.6 0.017 273.7 / 80%); /* changed */
+  --chart-1: oklch(0.646 0.222 41.116); /* unchanged but correct */
+  --chart-2: oklch(0.6 0.118 184.704); /* unchanged but correct */
+  --chart-3: oklch(0.398 0.07 227.392); /* unchanged but correct */
+  --chart-4: oklch(0.828 0.189 84.429); /* unchanged but correct */
+  --chart-5: oklch(0.769 0.188 70.08); /* unchanged but correct */
+  --sidebar: oklch(0.98 0.0114 84.58); /* changed */
+  --sidebar-foreground: oklch(0.18 0.0188 274.65); /* changed */
+  --sidebar-primary: oklch(0.205 0 0);  
+  --sidebar-primary-foreground: oklch(0.98 0.0114 84.58); /* changed */
+  --sidebar-accent: oklch(0.95 0.1425 120.97); /* changed */
+  --sidebar-accent-foreground: oklch(0.18 0.0188 274.65); /* changed */
+  --sidebar-border: oklch(0.93 0.0103 81.79); /* changed */
+  --sidebar-ring: oklch(0.6 0.017 273.7 / 80%); /* changed */
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.269 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.371 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --color-curo-light-blue: #e1f6ff;
+  --color-curo-tan: #fefdfb;
+  --color-curo-light-green: #f7ffe1;
+  --color-curo-deep-purple: #0f111a;
+  --color-curo-dark-blue: #171927;
+  --color-curo-green: #e1fe8d;
+  --color-curo-font: #181e2c;
+  --color-primary-border-light-gray: #d3e2e9;
+  --color-Curo-Green: #e1fe8d;
+  --color-Gray: #5c5f67;
+  --color-Gray-2: #7e818c;
+  --color-Primary-Blue: #181e2c;
+  --color-Stroke-1: #f3f1ed;
+  --color-Stroke-2: #ebe7e0;
+  --color-Tan-1: #fdfbf7; 
+  --color-Tan-2: #fbf7ef;
+  --color-White: #ffffff;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-public-sans: Public Sans, Helvetica Neue, Arial, sans-serif;
+  --font-clash-grotesk:
+    Clash Grotesk, Helvetica Neue, Roboto, Arial, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 4rem;
+  --text-7xl: 5rem;
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-shimmer: shimmer 3s ease-in-out infinite;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= 768px) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@layer utilities {
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --foreground-rgb: 255, 255, 255;
+      --background-start-rgb: 0, 0, 0;
+      --background-end-rgb: 0, 0, 0;
+    }
+  }
+
+  h1 {
+    @apply font-clash-grotesk font-[550] text-[80px] leading-[80px] tracking-normal text-curo-font;
+  }
+
+  h2 {
+    @apply font-clash-grotesk font-[550] text-[56px] leading-[60px] tracking-normal text-curo-font;
+  }
+
+  h3 {
+    @apply font-clash-grotesk font-[550] text-2xl tracking-normal text-curo-font;
+  }
+
+  h4 {
+    @apply font-clash-grotesk font-[550] text-xl leading-6 tracking-wide text-curo-font;
+  }
+
+  .bodyBig {
+    @apply font-public-sans font-normal text-base tracking-normal text-curo-font;
+  }
+
+  .bodyMain {
+    @apply font-public-sans font-normal text-sm leading-[22px] tracking-normal text-curo-font;
+  }
+
+  .subheading1 {
+    @apply font-clash-grotesk font-[550] text-base leading-5 tracking-wide text-curo-font;
+  }
+
+  .subheading2 {
+    @apply font-public-sans font-semibold text-sm tracking-normal text-curo-font;
+  }
+
+  .subheading3 {
+    @apply font-public-sans font-semibold text-xs tracking-normal text-curo-font;
+  }
+}
+
+@layer base {
+  * {
+      @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
