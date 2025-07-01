@@ -33,7 +33,6 @@ export default function ActivationDashboard() {
     const [bestAccuracy, setBestAccuracy] = useState<number>(Infinity)
     const [bestLocation, setBestLocation] = useState<{latitude: number, longitude: number} | null>(null)
     
-    const [readingsCount, setReadingsCount] = useState<number>(0)
     const [showAddressInput, setShowAddressInput] = useState(false)
     const [address, setAddress] = useState('')
     const [shouldConfirmLocation, setShouldConfirmLocation] = useState(false)
@@ -97,7 +96,7 @@ export default function ActivationDashboard() {
     const requestLocationPermission = () => {
         console.log('Requesting location permission');
         navigator.geolocation.getCurrentPosition(
-            (position) => {
+            () => {
                 console.log('Location permission granted');
                 // Permission granted
                 setLocationPermission('granted')
@@ -121,7 +120,7 @@ export default function ActivationDashboard() {
         setTimerProgress(0)
         setLocationFound(false)
         setBestAccuracy(Infinity)
-        setReadingsCount(0)
+        // setReadingsCount(0)
         setShowAddressInput(false)
         setBestLocation(null)
         setShouldConfirmLocation(false)
@@ -135,22 +134,22 @@ export default function ActivationDashboard() {
     }
 
     // Function to handle geolocation errors
-    const handleGeolocationError = (error: GeolocationPositionError) => {
-        switch(error.code) {
-            case error.PERMISSION_DENIED:
-                // Check if it's the secure origin error
-                if (error.message.includes('secure origins') || error.message.includes('Only secure origins are allowed')) {
-                    return "Location requires HTTPS. For this demo, please enter your address manually.";
-                }
-                return "Location access denied. Please enable location services in your settings.";
-            case error.POSITION_UNAVAILABLE:
-                return "Location information is unavailable. Please try again in an open area.";
-            case error.TIMEOUT:
-                return "Location request timed out. Please try again.";
-            default:
-                return "An unknown error occurred getting your location.";
-        }
-    };
+    // const handleGeolocationError = (error: GeolocationPositionError) => {
+    //     switch(error.code) {
+    //         case error.PERMISSION_DENIED:
+    //             // Check if it's the secure origin error
+    //             if (error.message.includes('secure origins') || error.message.includes('Only secure origins are allowed')) {
+    //                 return "Location requires HTTPS. For this demo, please enter your address manually.";
+    //             }
+    //             return "Location access denied. Please enable location services in your settings.";
+    //         case error.POSITION_UNAVAILABLE:
+    //             return "Location information is unavailable. Please try again in an open area.";
+    //         case error.TIMEOUT:
+    //             return "Location request timed out. Please try again.";
+    //         default:
+    //             return "An unknown error occurred getting your location.";
+    //     }
+    // };
 
     // Handle address selection from autocomplete
     const handleAddressSelect = (selectedAddress: string, lat: number, lng: number) => {
@@ -221,7 +220,7 @@ export default function ActivationDashboard() {
                 setLocationFound(true);
                 setAccuracy(25); // Good accuracy for demo
                 setBestAccuracy(25);
-                setReadingsCount(1);
+                // setReadingsCount(1);
                 
                 console.log('Demo location set:', demoLocation);
                 

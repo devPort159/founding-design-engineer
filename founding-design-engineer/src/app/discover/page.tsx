@@ -1,7 +1,7 @@
 'use client';
 
 import { ChargersMap } from "./ChargersMap";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { Libraries, LoadScript } from "@react-google-maps/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -483,7 +483,7 @@ const exampleJson = {
     "charging_when_closed": true
 }
 
-export default function ChargersMapPage() {
+function ChargersMapPage() {
     const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
     const [markerLibrary, setMarkerLibrary] = useState<any>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -1875,3 +1875,12 @@ export default function ChargersMapPage() {
         </LoadScript>
     )
 };
+
+// Wrap with Suspense to handle useSearchParams
+export default function DiscoverPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ChargersMapPage />
+        </Suspense>
+    );
+}

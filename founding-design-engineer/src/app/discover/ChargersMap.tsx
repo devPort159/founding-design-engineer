@@ -145,7 +145,7 @@ export const ChargersMap = React.memo<MapComponentProps>(({
         // Determine fill color based on conditions
         let fillColor;
         let textColor;
-        let strokeColor = '#FFFFFF';
+        const strokeColor = '#FFFFFF';
         let zIndex = 1;
         
         if (isSelected) {

@@ -90,7 +90,7 @@ export const LocationMap = ({
                 });
             }
         }
-    }, [mapLoaded, latitude, longitude, accuracy, draggable, onLocationChange, map]);
+    }, [mapLoaded, latitude, longitude, accuracy, draggable, onLocationChange, map, markerLibrary]);
 
     // Update marker and circle positions when coordinates change
     useEffect(() => {
