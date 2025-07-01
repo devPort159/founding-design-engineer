@@ -1,2 +1,2 @@
 # founding-design-engineer
-Design Critique APp
+Design Critique App
