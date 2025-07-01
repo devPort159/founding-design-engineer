@@ -485,14 +485,10 @@ const exampleJson = {
 
 function ChargersMapPage() {
     const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
-    const [markerLibrary, setMarkerLibrary] = useState<any>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const [isMounted, setIsMounted] = useState(false);
     const pageSize = 50;
     const [isLoading, setIsLoading] = useState(false);
-    const [loadingProgress, setLoadingProgress] = useState({ current: 0, total: 0 });
-    const [totalLocations, setTotalLocations] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
     const [dbLocations, setDbLocations] = useState<any[]>([]);
     const [pins, setPins] = useState<any[]>([]);
     const [groupedPins, setGroupedPins] = useState<any[]>([]);
@@ -507,7 +503,6 @@ function ChargersMapPage() {
 
     const [selectedEvse, setSelectedEvse] = useState<any | null>(null);
 
-    const searchParams = useSearchParams();
     const [emaCode, setEmaCode] = useState<string | null>(null);
 
     // Tabs
@@ -521,14 +516,6 @@ function ChargersMapPage() {
 
     // Bottom sheet state
     const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
-
-    // Map Bounds
-    const [mapBounds, setMapBounds] = useState<{ north: number, south: number, east: number, west: number } | null>(null);
-    const [boundsChanged, setBoundsChanged] = useState(false);
-
-    // Search
-    const [isSearching, setIsSearching] = useState(false);
-    const [triggerSearch, setTriggerSearch] = useState(false);
 
     // Ask user for location
     const [userLocation, setUserLocation] = useState<{ latitude: number, longitude: number, accuracy: number } | null>(null);
@@ -544,64 +531,6 @@ function ChargersMapPage() {
     const [sessionEventSource, setSessionEventSource] = useState<EventSource | null>(null);
     const [sseConnectionStatus, setSseConnectionStatus] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
 
-    // Function to start location tracking
-    const startLocationTracking = () => {
-        if (navigator.geolocation && !locationWatchId) {
-            setLocationError(null);
-            setIsLocationTracking(true);
-            
-            const watchId = navigator.geolocation.watchPosition(
-                (position) => {
-                    setUserLocation({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        accuracy: position.coords.accuracy
-                    });
-                    setLocationError(null);
-                },
-                (error) => {
-                    console.error('Error getting user location:', error);
-                    
-                    let errorMessage = 'Unknown location error';
-                    let shouldStopTracking = false;
-                    
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            // Check if it's the secure origin error
-                            if (error.message.includes('secure origins') || error.message.includes('Only secure origins are allowed')) {
-                                errorMessage = 'Location requires HTTPS. Demo mode - location features limited.';
-                                shouldStopTracking = true;
-                            } else {
-                                errorMessage = 'Location access denied by user';
-                                shouldStopTracking = true;
-                            }
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage = 'Location information unavailable';
-                            // Continue tracking, this might be temporary
-                            break;
-                        case error.TIMEOUT:
-                            errorMessage = 'Location request timed out - will continue trying';
-                            // Don't stop tracking on timeout, watchPosition will keep trying
-                            break;
-                    }
-                    
-                    setLocationError(errorMessage);
-                    
-                    if (shouldStopTracking) {
-                        setIsLocationTracking(false);
-                    }
-                },
-                {
-                    enableHighAccuracy: true, // Use GPS if available
-                    timeout: 15000, // Increased to 15 seconds timeout per request
-                    maximumAge: 60000 // Accept cached location up to 60 seconds old
-                }
-            );
-            
-            setLocationWatchId(watchId);
-        }
-    };
 
     // Function to stop location tracking
     const stopLocationTracking = () => {
@@ -1070,11 +999,6 @@ function ChargersMapPage() {
         }
     };
     
-    // Toggle between showing all pins or just grouped pins
-    const togglePinDisplay = () => {
-        setShowAllPins(!showAllPins);
-    };
-    
     // Calculate availability statistics
     const getAvailabilityStats = () => {
         if (selectedPin?.isEvse) {
@@ -1271,103 +1195,6 @@ function ChargersMapPage() {
         }
     }, []);
 
-      
-    // Set up Server-Sent Events for real-time session updates
-    const startSessionSSE = () => {
-        console.log('Starting SSE connection for session updates');
-        setSseConnectionStatus('connecting');
-        
-        // Create EventSource connection
-        const eventSource = new EventSource('/api/ocpi/activation/get-sessions-stream', {
-            withCredentials: true
-        });
-
-        // Handle session updates
-        eventSource.addEventListener('sessions', (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                console.log('SSE sessions event:', data.type, data);
-                
-                if (data.type === 'initial') {
-                    // Initial session data load
-                    console.log('SSE: Received initial sessions:', data.sessions);
-                    setSessions(data.sessions || []);
-                    setEmaCode(data.emaCode);
-                } else if (data.type === 'update') {
-                    // Real-time session update
-                    console.log('SSE: Session update:', data.eventType, data.session);
-                    
-                    setSessions(currentSessions => {
-                        switch (data.eventType) {
-                            case 'INSERT':
-                                // Add new session if it doesn't already exist
-                                const existingSession = currentSessions.find(s => s.id === data.session.id);
-                                if (!existingSession) {
-                                    console.log('SSE: Adding new session:', data.session);
-                                    return [...currentSessions, data.session];
-                                }
-                                return currentSessions;
-                                
-                            case 'UPDATE':
-                                // Update existing session
-                                console.log('SSE: Updating session:', data.session);
-                                return currentSessions.map(s => 
-                                    s.id === data.session.id ? data.session : s
-                                );
-                                
-                            case 'DELETE':
-                                // Remove deleted session
-                                console.log('SSE: Removing session:', data.session);
-                                return currentSessions.filter(s => s.id !== data.session.id);
-                                
-                            default:
-                                return currentSessions;
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error('Error parsing SSE sessions data:', error);
-            }
-        });
-
-        // Handle connection status
-        eventSource.addEventListener('status', (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                console.log('SSE status:', data);
-                if (data.type === 'connected') {
-                    setSseConnectionStatus('connected');
-                }
-            } catch (error) {
-                console.error('Error parsing SSE status data:', error);
-            }
-        });
-
-        // Handle errors
-        eventSource.addEventListener('error', (event) => {
-            console.error('SSE error:', event);
-            setSseConnectionStatus('disconnected');
-            
-            // EventSource will automatically try to reconnect
-        });
-
-        // Handle keepalive
-        eventSource.addEventListener('keepalive', (event) => {
-            // Just to keep connection alive, no action needed
-            console.log('SSE keepalive received');
-        });
-
-        // Connection opened
-        eventSource.onopen = () => {
-            console.log('SSE connection opened');
-            setSseConnectionStatus('connected');
-        };
-
-        // Store the EventSource instance
-        setSessionEventSource(eventSource);
-    };
-
-    // Note: fetchInitialSessions is no longer needed - SSE handles initial data load
 
     // Cleanup function to close SSE connection
     const stopSessionSSE = () => {
