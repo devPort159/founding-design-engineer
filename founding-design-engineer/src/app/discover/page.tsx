@@ -1399,7 +1399,7 @@ function ChargersMapPage() {
         setIsStartingSession(true);
         try {
             // DEMO MODE: Simulate successful session start instead of making API call
-            console.log('Demo mode: Simulating unknown session start');
+            console.log('Demo mode: Simulating unknown session start: toast should be displayed');
             
             // Add realistic delay to simulate API call
             await new Promise(resolve => setTimeout(resolve, 2000));
@@ -1418,7 +1418,7 @@ function ChargersMapPage() {
                 setShowSessionsModal(true);
                 
                 // In demo mode, no real SSE updates
-                console.log('Demo session started successfully - no real-time updates in demo');
+                console.log('Demo session started successfully - no real-time updates in demo: toast should be ending now');
             }
         } catch (error: any) {
             console.error('Error in demo session start:', error);
