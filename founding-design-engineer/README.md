@@ -188,31 +188,6 @@ const statusColors = {
 - Responsive design breaks
 - Inconsistent spacing/styling
 
-## 🛡 TypeScript Notes
-
-**Current State**: The codebase uses `any` types extensively, which is intentional for the interview exercise. In a production application, you would want proper type definitions for:
-
-```typescript
-// Example of what proper types might look like
-interface ChargingLocation {
-  id: string;
-  name: string;
-  address: string;
-  coordinates: {
-    latitude: number;
-    longitude: number;
-  };
-  evse: EVSE[];
-}
-
-interface EVSE {
-  uid: string;
-  status: 'AVAILABLE' | 'CHARGING' | 'OCCUPIED' | 'FAULTED' | 'UNKNOWN';
-  connectors: Connector[];
-  physical_reference: string;
-}
-```
-
 ## 🔧 Available Scripts
 
 ```bash
