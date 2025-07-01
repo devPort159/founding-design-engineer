@@ -1388,6 +1388,7 @@ function ChargersMapPage() {
                 duration: 3000,
                 className: 'bg-red-500 text-white'
             });
+            console.error("No charger selected");
         } else if (selectedEvse.uid === 'unknown') {
             startUnknownSession();
         } else {
